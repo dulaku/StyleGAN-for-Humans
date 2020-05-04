@@ -18,11 +18,12 @@ This is a sequel to [ProGAN For Humans](https://github.com/dulaku/ProGAN-for-Hum
 
 The recommended reading order is `train.py`, `stylegan_dataloader.py`, `stylegan_models.py`, `stylegan_layers.py`. You'll want to understand what the style mixer is doing for the style mixing logic in the model itself to make sense. This doesn't feel particularly intuitive or readable, so suggestions welcome.</br>
 
-Compared to the code in the original project, there are 3 major differences:</br>
+Compared to the code in the original project, there are 4 major differences:</br>
 
 * I have not implemented the truncation trick for visualizing images, but I have pointed out where it would need to go if you wanted to use it. The trick loses image diversity but keeps the model from generating images on outlier inputs, so you're at a slightly higher risk of getting bizarre outputs.
 * The Gaussian blur trick was not part of the original code base and is technically incorrect, but it was necessary in order to keep the model size down. In practice I suspect this won't cause much trouble, but in case it's a problem for you, I've left in a layer that applies the blur separately and instructions for using it.
 * The original paper discusses mixing up to 4 styles, but its code only ever uses 2. I went ahead and implemented mixing of arbitrarily many styles (up to the number of AdaIN layers in the model).
+* The code does not implement the additional training after reaching full resolution that is used in the paper - to do this yourself, train for an extra 375 epochs (on a 30000 image dataset).
 
 As before, readability of the code was the highest priority, so some features are lacking and I would not expect a production-ready code base. In particular:</br>
 
@@ -42,12 +43,11 @@ In general, I try to assume you have the paper on hand - comments don't generall
 # Requirements:
 
 The following Python modules are required. I recommend installing the Python requirement with ``venv`` or something similar.</br>
-* ``Pillow``
-* ``numpy``
-* ``torch``
-* ``torchvision``
+* `Pillow`
+* `numpy`
+* `torch`
+* `torchvision`
 
 You will also need a dataset of 1024x1024 images. In principle, you should use the [FFHQ dataset](https://github.com/NVlabs/ffhq-dataset). In practice, I've been trying to download this thing for a solid month but Google Drive has a quota that has kept me from succeeding.</br>
 
-You may also find it helpful to set the environment variable ``CUDA_VISIBLE_DEVICES=1,0`` - your OS may be using some VRAM on your 0th GPU, so reversing them for Pytorch can give you just a bit more room on the GPU used for unparallelized scratch space.</br>
-
+You may also find it helpful to set the environment variable `CUDA_VISIBLE_DEVICES=1,0` - your OS may be using some VRAM on your 0th GPU, so reversing them for Pytorch can give you just a bit more room on the GPU used for unparallelized scratch space.</br>
