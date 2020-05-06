@@ -33,14 +33,11 @@ class FFHQDataset(torch.utils.data.Dataset):
                          if os.path.isfile(os.path.join(source_directory, file))]
             # We assume all images are 1024 to begin with; handling the general case
             # would really complicate this a lot more than necessary.
-            downsample = torchvision.transforms.Resize(1024 // resolution,
+            downsample = torchvision.transforms.Resize(resolution,
                                                        interpolation=Image.BILINEAR)
-            toImage = torchvision.transforms.ToPILImage()
             for sample in originals:
                 image = Image.open(os.path.join(source_directory, sample))
-                image = torchvision.transforms.functional.to_tensor(image)
                 image = downsample(image)
-                image = toImage(image)
                 png_ext = ".".join(sample.split(".")[:-1]) + ".png"
                 image.save(os.path.join(self.directory, png_ext), "PNG")
 
