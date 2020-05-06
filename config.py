@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--n_epochs",
     type=int,
-    default=1, # 27 epochs is the smallest exceeding the 800k images/phase in the paper
+    default=27,  # 27 epochs is the smallest exceeding the 800k images/phase in the paper
     help="number of epochs of training at each resolution.",
 )
 parser.add_argument(
@@ -101,7 +101,7 @@ parser.add_argument(
 parser.add_argument(
     "--sample_interval",
     type=int,
-    default=500,
+    default=2000,
     help="Number of images shown to the discriminator between sample images."
 )
 

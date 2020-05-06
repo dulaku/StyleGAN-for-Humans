@@ -49,7 +49,7 @@ class FFHQDataset(torch.utils.data.Dataset):
         ]
 
     def __len__(self):
-        return 5000#len(self.samples)
+        return len(self.samples)
 
     def __getitem__(self, index):
         image = Image.open(os.path.join(self.directory, self.samples[index]))
